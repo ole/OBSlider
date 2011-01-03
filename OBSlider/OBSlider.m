@@ -98,8 +98,11 @@
 
 - (void) endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
-    self.scrubbingSpeed = 1.0f;
-    [super endTrackingWithTouch:touch withEvent:event];
+    if (self.tracking) 
+    {
+        self.scrubbingSpeed = 1.0f;
+        [self sendActionsForControlEvents:UIControlEventValueChanged];
+    }
 }
 
 @end
