@@ -11,9 +11,14 @@
 @interface OBSlider : UISlider
 {
     float scrubbingSpeed;
+    NSArray *scrubbingSpeeds;
+    NSArray *scrubbingSpeedChangePositions;
+    
     CGPoint beganTrackingLocation;
 }
 
 @property (assign, readonly) float scrubbingSpeed;
+@property (retain) NSArray *scrubbingSpeeds;
+@property (retain) NSArray *scrubbingSpeedChangePositions;
 
 @end

@@ -13,6 +13,9 @@
 @property (assign, readwrite) float scrubbingSpeed;
 @property (assign) CGPoint beganTrackingLocation;
 
+- (NSArray *) defaultScrubbingSpeeds;
+- (NSArray *) defaultScrubbingSpeedChangePositions;
+
 @end
 
 
@@ -20,7 +23,17 @@
 @implementation OBSlider
 
 @synthesize scrubbingSpeed;
+@synthesize scrubbingSpeeds;
+@synthesize scrubbingSpeedChangePositions;
 @synthesize beganTrackingLocation;
+
+
+- (void) dealloc
+{
+    self.scrubbingSpeeds = nil;
+    self.scrubbingSpeedChangePositions = nil;
+    [super dealloc];
+}
 
 
 - (id) initWithFrame:(CGRect)frame
@@ -28,22 +41,36 @@
     self = [super initWithFrame:frame];
     if (self != nil)
     {
-        self.scrubbingSpeed = 1.0f;
+        self.scrubbingSpeeds = [self defaultScrubbingSpeeds];
+        self.scrubbingSpeedChangePositions = [self defaultScrubbingSpeedChangePositions];
+        self.scrubbingSpeed = [[self.scrubbingSpeeds objectAtIndex:0] floatValue];
     }
     return self;
 }
 
+
+
+#pragma mark -
+#pragma mark NSCoding
 
 - (id) initWithCoder:(NSCoder *)decoder
 {
     self = [super initWithCoder:decoder];
     if (self != nil) 
     {
-    	if ([decoder containsValueForKey:@"scrubbingSpeed"]) {
-            self.scrubbingSpeed = [decoder decodeFloatForKey:@"scrubbingSpeed"];
+    	if ([decoder containsValueForKey:@"scrubbingSpeeds"]) {
+            self.scrubbingSpeeds = [decoder decodeObjectForKey:@"scrubbingSpeeds"];
         } else {
-            self.scrubbingSpeed = 1.0f;
+            self.scrubbingSpeeds = [self defaultScrubbingSpeeds];
         }
+
+        if ([decoder containsValueForKey:@"scrubbingSpeedChangePositions"]) {
+            self.scrubbingSpeedChangePositions = [decoder decodeObjectForKey:@"scrubbingSpeedChangePositions"];
+        } else {
+            self.scrubbingSpeedChangePositions = [self defaultScrubbingSpeedChangePositions];
+        }
+        
+        self.scrubbingSpeed = [[self.scrubbingSpeeds objectAtIndex:0] floatValue];
     }
     return self;
 }
@@ -56,6 +83,9 @@
 }
 
 
+
+#pragma mark -
+#pragma mark Touch tracking
 
 - (BOOL) beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
@@ -76,15 +106,16 @@
         CGPoint currentLocation  = [touch locationInView:self];
         CGFloat trackingOffset = currentLocation.x - previousLocation.x;
         
+        // Find the scrubbing speed that curresponds to the touch's vertical offset
         CGFloat verticalOffset = fabsf(currentLocation.y - self.beganTrackingLocation.y);
-        if (verticalOffset < 50.0f) {
-            self.scrubbingSpeed = 1.0f;
-        } else if (verticalOffset < 100.0f) {
-            self.scrubbingSpeed = 0.5f;
-        } else {
-            self.scrubbingSpeed = 0.1f;
+        NSUInteger scrubbingSpeedChangePosIndex = [self.scrubbingSpeedChangePositions indexOfObjectPassingTest:^(id obj, NSUInteger idx, BOOL *stop) {
+            return (BOOL)(verticalOffset < [obj floatValue]);
+        }];
+        if (scrubbingSpeedChangePosIndex == NSNotFound) {
+            scrubbingSpeedChangePosIndex = [self.scrubbingSpeeds count];
         }
-        
+        self.scrubbingSpeed = [[self.scrubbingSpeeds objectAtIndex:scrubbingSpeedChangePosIndex - 1] floatValue];
+         
         CGRect trackRect = [self trackRectForBounds:self.bounds];
         self.value = self.value + self.scrubbingSpeed * (self.maximumValue - self.minimumValue) * (trackingOffset / trackRect.size.width);
         
@@ -100,9 +131,36 @@
 {
     if (self.tracking) 
     {
-        self.scrubbingSpeed = 1.0f;
+        self.scrubbingSpeed = [[self.scrubbingSpeeds objectAtIndex:0] floatValue];
         [self sendActionsForControlEvents:UIControlEventValueChanged];
     }
+}
+
+
+
+#pragma mark -
+#pragma mark Default values
+
+// Used in -initWithFrame: and -initWithCoder:
+- (NSArray *) defaultScrubbingSpeeds
+{
+    return [NSArray arrayWithObjects:
+            [NSNumber numberWithFloat:1.0f],
+            [NSNumber numberWithFloat:0.5f],
+            [NSNumber numberWithFloat:0.25f],
+            [NSNumber numberWithFloat:0.1f],
+            nil];
+}
+
+
+- (NSArray *) defaultScrubbingSpeedChangePositions
+{
+    return [NSArray arrayWithObjects:
+            [NSNumber numberWithFloat:0.0f],
+            [NSNumber numberWithFloat:50.0f],
+            [NSNumber numberWithFloat:100.0f],
+            [NSNumber numberWithFloat:150.0f],
+            nil];
 }
 
 @end
