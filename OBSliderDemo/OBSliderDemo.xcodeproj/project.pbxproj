@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1D3623260D0F684500981E51 /* OBSliderDemoAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* OBSliderDemoAppDelegate.m */; };
+		1D3623260D0F684500981E51 /* AppController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* AppController.m */; };
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
@@ -20,8 +20,8 @@
 
 /* Begin PBXFileReference section */
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		1D3623240D0F684500981E51 /* OBSliderDemoAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBSliderDemoAppDelegate.h; sourceTree = "<group>"; };
-		1D3623250D0F684500981E51 /* OBSliderDemoAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OBSliderDemoAppDelegate.m; sourceTree = "<group>"; };
+		1D3623240D0F684500981E51 /* AppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppController.h; sourceTree = "<group>"; };
+		1D3623250D0F684500981E51 /* AppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppController.m; sourceTree = "<group>"; };
 		1D6058910D05DD3D006BFB54 /* OBSliderDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OBSliderDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		288765A40DF7441C002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -54,8 +54,8 @@
 			isa = PBXGroup;
 			children = (
 				5DC4B21812D207DC00BA19A1 /* OBSlider */,
-				1D3623240D0F684500981E51 /* OBSliderDemoAppDelegate.h */,
-				1D3623250D0F684500981E51 /* OBSliderDemoAppDelegate.m */,
+				1D3623240D0F684500981E51 /* AppController.h */,
+				1D3623250D0F684500981E51 /* AppController.m */,
 				28D7ACF60DDB3853001CB0EB /* OBSliderDemoViewController.h */,
 				28D7ACF70DDB3853001CB0EB /* OBSliderDemoViewController.m */,
 			);
@@ -183,7 +183,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
-				1D3623260D0F684500981E51 /* OBSliderDemoAppDelegate.m in Sources */,
+				1D3623260D0F684500981E51 /* AppController.m in Sources */,
 				28D7ACF80DDB3853001CB0EB /* OBSliderDemoViewController.m in Sources */,
 				5DC4B21B12D207DC00BA19A1 /* OBSlider.m in Sources */,
 			);

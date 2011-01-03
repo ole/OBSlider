@@ -6,10 +6,10 @@
 //  Copyright 2011 Ole Begemann. All rights reserved.
 //
 
-#import "OBSliderDemoAppDelegate.h"
+#import "AppController.h"
 #import "OBSliderDemoViewController.h"
 
-@implementation OBSliderDemoAppDelegate
+@implementation AppController
 
 @synthesize window;
 @synthesize viewController;

@@ -10,7 +10,7 @@
 
 @class OBSliderDemoViewController;
 
-@interface OBSliderDemoAppDelegate : NSObject <UIApplicationDelegate> {
+@interface AppController : NSObject <UIApplicationDelegate> {
     UIWindow *window;
     OBSliderDemoViewController *viewController;
 }
