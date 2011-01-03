@@ -9,9 +9,20 @@
 #import <UIKit/UIKit.h>
 
 
+@class OBSlider;
+
 @interface OBSliderDemoViewController : UIViewController 
 {
+    OBSlider *slider;
+    UILabel *sliderValueLabel;
+    UILabel *scrubbingSpeedLabel;
 }
+
+@property (retain) IBOutlet OBSlider *slider;
+@property (retain) IBOutlet UILabel *sliderValueLabel;
+@property (retain) IBOutlet UILabel *scrubbingSpeedLabel;
+
+- (IBAction) sliderValueDidChange:(id)sender;
 
 @end
 

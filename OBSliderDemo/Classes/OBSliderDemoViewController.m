@@ -7,11 +7,29 @@
 //
 
 #import "OBSliderDemoViewController.h"
+#import "OBSlider.h"
+
+
+
+@interface OBSliderDemoViewController ()
+
+- (void) releaseOutlets;
+- (void) updateUI;
+
+@end;
+
+
 
 @implementation OBSliderDemoViewController
 
+@synthesize slider;
+@synthesize sliderValueLabel;
+@synthesize scrubbingSpeedLabel;
+
+
 - (void) dealloc 
 {
+    [self releaseOutlets];
     [super dealloc];
 }
 
@@ -26,6 +44,42 @@
 {
 	// Release any retained subviews of the main view.
 	// e.g. self.myOutlet = nil;
+    [self releaseOutlets];
+}
+
+
+- (void) releaseOutlets
+{
+    self.slider = nil;
+    self.sliderValueLabel = nil;
+    self.scrubbingSpeedLabel = nil;
+}
+
+
+- (void) viewWillAppear:(BOOL)animated
+{
+    [self updateUI];
+}
+
+
+- (void) updateUI
+{
+    NSNumberFormatter *valueFormatter = [[[NSNumberFormatter alloc] init] autorelease];
+    [valueFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
+    
+    NSNumberFormatter *percentFormatter = [[[NSNumberFormatter alloc] init] autorelease];
+    [percentFormatter setNumberStyle:NSNumberFormatterPercentStyle];
+    
+    self.sliderValueLabel.text = [NSString stringWithFormat:@"Value: %@",
+                                  [valueFormatter stringFromNumber:[NSNumber numberWithFloat:self.slider.value]]];
+    self.scrubbingSpeedLabel.text = [NSString stringWithFormat:@"Scrubbing speed: %@",
+                                     [percentFormatter stringFromNumber:[NSNumber numberWithFloat:self.slider.scrubbingSpeed]]];
+}
+
+
+- (IBAction) sliderValueDidChange:(id)sender
+{
+    [self updateUI];
 }
 
 @end
