@@ -10,6 +10,7 @@
 
 @interface OBSlider ()
 
+@property (assign, readwrite) float scrubbingSpeed;
 @property (assign) CGPoint beganTrackingLocation;
 
 @end
@@ -17,6 +18,10 @@
 
 
 @implementation OBSlider
+
+@synthesize scrubbingSpeed;
+@synthesize beganTrackingLocation;
+
 
 - (id) initWithFrame:(CGRect)frame
 {

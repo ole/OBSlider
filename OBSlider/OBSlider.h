@@ -10,8 +10,10 @@
 
 @interface OBSlider : UISlider
 {
+    float scrubbingSpeed;
+    CGPoint beganTrackingLocation;
 }
 
-@property (assign) float scrubbingSpeed;
+@property (assign, readonly) float scrubbingSpeed;
 
 @end
