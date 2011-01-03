@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface OBSliderDemoViewController : UIViewController {
 
+@interface OBSliderDemoViewController : UIViewController 
+{
 }
 
 @end
