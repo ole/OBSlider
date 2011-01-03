@@ -15,14 +15,14 @@ To modify which scrubbing speed should be set at which vertical offset position 
 
 The default values for the two arrays are:
 
-    [NSArray arrayWithObjects:
+    scrubbingSpeeds = [NSArray arrayWithObjects:
      [NSNumber numberWithFloat:1.0f],
      [NSNumber numberWithFloat:0.5f],
      [NSNumber numberWithFloat:0.25f],
      [NSNumber numberWithFloat:0.1f],
      nil];
 
-    [NSArray arrayWithObjects:
+    scrubbingSpeedChangePositions = [NSArray arrayWithObjects:
      [NSNumber numberWithFloat:0.0f],
      [NSNumber numberWithFloat:50.0f],
      [NSNumber numberWithFloat:100.0f],
