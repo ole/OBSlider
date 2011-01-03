@@ -1,0 +1,49 @@
+# OBSlider
+
+A `UISlider` subclass that adds variable scrubbing speeds (as seen in the iPad app on iOS) to `UISlider`.
+
+Written by [Ole Begemann](http://oleb.net), January 2011.
+
+
+## Usage
+
+Copy `OBSlider.h` and `OBSlider.m` to your project and instantiate an `OBSlider` wherever you would use a `UISlider`. If you create the slider in Interface Builder, set its class to `OBSlider` on the Identity tab.
+
+The slider works with variable scrubbing speeds out of the box. In the action method you have assigned to `UIControlEventValueChanged`, you can access the `scrubbingSpeed` variable to get the current scrubbing speed. `Scrubbing `scrubbingSpeed` is a `float` where `1.0f` is the normal scrubbing speed.
+
+To modify which scrubbing speed should be set at which vertical offset position of the user's touch, you can modify the `scrubbingSpeeds` and `scrubbingSpeedChangePositions` arrays. Both arrays should contain the same number of objects. `scrubbingSpeedChangePositions` should indicate the vertical offsets at which scrubbing speed changes should take place in ascending order. The first entry in this array should always be `[NSNumber numberWithFloat:0.0f]`. `scrubbingSpeeds` should contain the actual values for the scrubbing speed that correspond to the offset positions.
+
+The default values for the two arrays are:
+
+    [NSArray arrayWithObjects:
+     [NSNumber numberWithFloat:1.0f],
+     [NSNumber numberWithFloat:0.5f],
+     [NSNumber numberWithFloat:0.25f],
+     [NSNumber numberWithFloat:0.1f],
+     nil];
+
+    [NSArray arrayWithObjects:
+     [NSNumber numberWithFloat:0.0f],
+     [NSNumber numberWithFloat:50.0f],
+     [NSNumber numberWithFloat:100.0f],
+     [NSNumber numberWithFloat:150.0f],
+     nil];
+
+(That is, scrubbing speed changes from 100% to 50% to 25% to 10% when the user moves the finger upward/downward by 50.0/100.0/150.0 points, respectively.)
+
+As it is, `OBSlider` works in iOS 4.0+ only because I am using `-[NSArray indexOfObjectPassingTest:]`. It would be quite trivial to make it 3.0-compatible. Let me know if you need iOS 3.0 compatibility or send me a pull request if you make the change yourself.
+
+
+## Demo
+
+Open the demo project `OBSliderDemo.xcodeproj` in Xcode and run it on an iPhone or the iPhone Simulator. Drag the slider around and, while dragging, move your finger upwards/downwards to adjust the scrubbing speed.
+
+
+## Untested
+
+The class is basically untested. Please report bugs via the issue tracker on GitHub.
+
+
+## License
+
+Licensed under the MIT license. You can use the code in your commercial and non-commercial projects.
