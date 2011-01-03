@@ -76,7 +76,7 @@
         CGPoint currentLocation  = [touch locationInView:self];
         CGFloat trackingOffset = currentLocation.x - previousLocation.x;
         
-        CGFloat verticalOffset = currentLocation.y - self.beganTrackingLocation.y;
+        CGFloat verticalOffset = fabsf(currentLocation.y - self.beganTrackingLocation.y);
         if (verticalOffset < 50.0f) {
             self.scrubbingSpeed = 1.0f;
         } else if (verticalOffset < 100.0f) {
