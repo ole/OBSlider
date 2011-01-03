@@ -64,14 +64,10 @@
 
 - (void) updateUI
 {
-    NSNumberFormatter *valueFormatter = [[[NSNumberFormatter alloc] init] autorelease];
-    [valueFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
-    
     NSNumberFormatter *percentFormatter = [[[NSNumberFormatter alloc] init] autorelease];
     [percentFormatter setNumberStyle:NSNumberFormatterPercentStyle];
     
-    self.sliderValueLabel.text = [NSString stringWithFormat:@"Value: %@",
-                                  [valueFormatter stringFromNumber:[NSNumber numberWithFloat:self.slider.value]]];
+    self.sliderValueLabel.text = [NSString stringWithFormat:@"Value: %.0f", self.slider.value];
     self.scrubbingSpeedLabel.text = [NSString stringWithFormat:@"Scrubbing speed: %@",
                                      [percentFormatter stringFromNumber:[NSNumber numberWithFloat:self.slider.scrubbingSpeed]]];
 }
