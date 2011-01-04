@@ -93,6 +93,7 @@
     if (beginTracking)
     {
         self.beganTrackingLocation = [touch locationInView:self];
+        realPositionValue = self.value;
     }
     return beginTracking;
 }
@@ -125,8 +126,16 @@
         self.scrubbingSpeed = [[self.scrubbingSpeeds objectAtIndex:scrubbingSpeedChangePosIndex - 1] floatValue];
          
         CGRect trackRect = [self trackRectForBounds:self.bounds];
-        self.value = self.value + self.scrubbingSpeed * (self.maximumValue - self.minimumValue) * (trackingOffset / trackRect.size.width);
-        
+        realPositionValue = realPositionValue + (self.maximumValue - self.minimumValue) * (trackingOffset / trackRect.size.width);
+        if ( (self.beganTrackingLocation.y < currentLocation.y) && (currentLocation.y < previousLocation.y) ||
+             (self.beganTrackingLocation.y > currentLocation.y) && (currentLocation.y > previousLocation.y) )
+            {
+            // We are getting closer to the slider, go closer to the real location
+            self.value = self.value + self.scrubbingSpeed * (self.maximumValue - self.minimumValue) * (trackingOffset / trackRect.size.width) + (realPositionValue - self.value) / ( 1 + fabsf(currentLocation.y - self.beganTrackingLocation.y));
+        } else {
+            self.value = self.value + self.scrubbingSpeed * (self.maximumValue - self.minimumValue) * (trackingOffset / trackRect.size.width);
+        }
+
         if (self.continuous) {
             [self sendActionsForControlEvents:UIControlEventValueChanged];
         }
