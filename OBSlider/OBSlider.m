@@ -13,7 +13,7 @@
 @property (assign, readwrite) float scrubbingSpeed;
 @property (assign) CGPoint beganTrackingLocation;
 
-- (NSUInteger) indexOfLowerScrubbingSpeed:(NSArray*)scrubbingSpeedPositions forOffset:(CGFloat)verticalOffset 
+- (NSUInteger) indexOfLowerScrubbingSpeed:(NSArray*)scrubbingSpeedPositions forOffset:(CGFloat)verticalOffset;
 - (NSArray *) defaultScrubbingSpeeds;
 - (NSArray *) defaultScrubbingSpeedChangePositions;
 
