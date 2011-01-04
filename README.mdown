@@ -31,7 +31,7 @@ The default values for the two arrays are:
 
 (That is, scrubbing speed changes from 100% to 50% to 25% to 10% when the user moves the finger upward/downward by 50.0/100.0/150.0 points, respectively.)
 
-As it is, `OBSlider` works in iOS 4.0+ only because I am using `-[NSArray indexOfObjectPassingTest:]`. It would be quite trivial to make it 3.0-compatible. Let me know if you need iOS 3.0 compatibility or send me a pull request if you make the change yourself.
+`OBSlider` works in iOS 3.0+ (iOS 3.x compatibility by [David Linsin](https://github.com/dlinsin). Thanks David!)
 
 
 ## Demo
