@@ -97,6 +97,16 @@
     return beginTracking;
 }
 
+- (NSUInteger) findIndexOfLowerScrubbingSpeed:(NSArray*)scrubbingSpeedPositions :(CGFloat)verticalOffset {
+    for (int i=0; i < [scrubbingSpeedPositions count]; i++) {
+        NSNumber *obj = [scrubbingSpeedPositions objectAtIndex:i];
+        if (verticalOffset < [obj floatValue]) {
+            return i;
+        }
+    }
+    return NSNotFound; 
+}
+
 
 - (BOOL) continueTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
@@ -108,9 +118,7 @@
         
         // Find the scrubbing speed that curresponds to the touch's vertical offset
         CGFloat verticalOffset = fabsf(currentLocation.y - self.beganTrackingLocation.y);
-        NSUInteger scrubbingSpeedChangePosIndex = [self.scrubbingSpeedChangePositions indexOfObjectPassingTest:^(id obj, NSUInteger idx, BOOL *stop) {
-            return (BOOL)(verticalOffset < [obj floatValue]);
-        }];
+        NSUInteger scrubbingSpeedChangePosIndex = [self findIndexOfLowerScrubbingSpeed:self.scrubbingSpeedChangePositions :verticalOffset];        
         if (scrubbingSpeedChangePosIndex == NSNotFound) {
             scrubbingSpeedChangePosIndex = [self.scrubbingSpeeds count];
         }
