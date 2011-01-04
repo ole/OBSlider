@@ -13,6 +13,7 @@
 @property (assign, readwrite) float scrubbingSpeed;
 @property (assign) CGPoint beganTrackingLocation;
 
+- (NSUInteger) indexOfLowerScrubbingSpeed:(NSArray*)scrubbingSpeedPositions forOffset:(CGFloat)verticalOffset 
 - (NSArray *) defaultScrubbingSpeeds;
 - (NSArray *) defaultScrubbingSpeedChangePositions;
 
@@ -97,16 +98,6 @@
     return beginTracking;
 }
 
-- (NSUInteger) findIndexOfLowerScrubbingSpeed:(NSArray*)scrubbingSpeedPositions :(CGFloat)verticalOffset {
-    for (int i=0; i < [scrubbingSpeedPositions count]; i++) {
-        NSNumber *obj = [scrubbingSpeedPositions objectAtIndex:i];
-        if (verticalOffset < [obj floatValue]) {
-            return i;
-        }
-    }
-    return NSNotFound; 
-}
-
 
 - (BOOL) continueTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
@@ -118,7 +109,7 @@
         
         // Find the scrubbing speed that curresponds to the touch's vertical offset
         CGFloat verticalOffset = fabsf(currentLocation.y - self.beganTrackingLocation.y);
-        NSUInteger scrubbingSpeedChangePosIndex = [self findIndexOfLowerScrubbingSpeed:self.scrubbingSpeedChangePositions :verticalOffset];        
+        NSUInteger scrubbingSpeedChangePosIndex = [self indexOfLowerScrubbingSpeed:self.scrubbingSpeedChangePositions forOffset:verticalOffset];        
         if (scrubbingSpeedChangePosIndex == NSNotFound) {
             scrubbingSpeedChangePosIndex = [self.scrubbingSpeeds count];
         }
@@ -142,6 +133,22 @@
         self.scrubbingSpeed = [[self.scrubbingSpeeds objectAtIndex:0] floatValue];
         [self sendActionsForControlEvents:UIControlEventValueChanged];
     }
+}
+
+
+
+#pragma mark -
+#pragma mark Helper methods
+
+- (NSUInteger) indexOfLowerScrubbingSpeed:(NSArray*)scrubbingSpeedPositions forOffset:(CGFloat)verticalOffset 
+{
+    for (int i = 0; i < [scrubbingSpeedPositions count]; i++) {
+        NSNumber *scrubbingSpeedOffset = [scrubbingSpeedPositions objectAtIndex:i];
+        if (verticalOffset < [scrubbingSpeedOffset floatValue]) {
+            return i;
+        }
+    }
+    return NSNotFound; 
 }
 
 
