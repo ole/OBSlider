@@ -80,7 +80,11 @@
 - (void) encodeWithCoder:(NSCoder *)coder
 {
     [super encodeWithCoder:coder];
-    [coder encodeFloat:self.scrubbingSpeed forKey:@"scrubbingSpeed"];
+
+    [coder encodeObject:self.scrubbingSpeeds forKey:@"scrubbingSpeeds"];
+    [coder encodeObject:self.scrubbingSpeedChangePositions forKey:@"scrubbingSpeedChangePositions"];
+    
+    // No need to archive self.scrubbingSpeed as it is calculated from the arrays on init
 }
 
 
