@@ -12,6 +12,7 @@
 
 @property (assign, readwrite) float scrubbingSpeed;
 @property (assign) CGPoint beganTrackingLocation;
+@property (assign) float beganTrackingValue;
 
 - (NSUInteger) indexOfLowerScrubbingSpeed:(NSArray*)scrubbingSpeedPositions forOffset:(CGFloat)verticalOffset;
 - (NSArray *) defaultScrubbingSpeeds;
@@ -27,6 +28,7 @@
 @synthesize scrubbingSpeeds;
 @synthesize scrubbingSpeedChangePositions;
 @synthesize beganTrackingLocation;
+@synthesize beganTrackingValue;
 
 
 - (void) dealloc
@@ -97,7 +99,9 @@
     BOOL beginTracking = [super beginTrackingWithTouch:touch withEvent:event];
     if (beginTracking)
     {
+        // Store the location of the touch and the slider's value when tracking begins
         self.beganTrackingLocation = [touch locationInView:self];
+        self.beganTrackingValue = self.value;
     }
     return beginTracking;
 }
@@ -107,9 +111,9 @@
 {
     if (self.tracking)
     {
-        CGPoint previousLocation = [touch previousLocationInView:self];
+        // Calculate the horizontal offset of the touch since tracking began
         CGPoint currentLocation  = [touch locationInView:self];
-        CGFloat trackingOffset = currentLocation.x - previousLocation.x;
+        CGFloat trackingOffset = currentLocation.x - beganTrackingLocation.x;
         
         // Find the scrubbing speed that curresponds to the touch's vertical offset
         CGFloat verticalOffset = fabsf(currentLocation.y - self.beganTrackingLocation.y);
@@ -117,10 +121,18 @@
         if (scrubbingSpeedChangePosIndex == NSNotFound) {
             scrubbingSpeedChangePosIndex = [self.scrubbingSpeeds count];
         }
-        self.scrubbingSpeed = [[self.scrubbingSpeeds objectAtIndex:scrubbingSpeedChangePosIndex - 1] floatValue];
-         
+        float newScrubbingSpeed = [[self.scrubbingSpeeds objectAtIndex:scrubbingSpeedChangePosIndex - 1] floatValue];
+        
+        // If the scrubbing speed changed since the last movement of the touch,
+        // we should animate the slider to the new value because the distance to the new value is potentially big.
+        // Otherwise, do not animate so that the slider's thumb closely follows the user's finger.
+        BOOL animateSlider = newScrubbingSpeed == self.scrubbingSpeed ? NO : YES;
+
+		// Calculate the new value for the slider and set it
+        self.scrubbingSpeed = newScrubbingSpeed;
         CGRect trackRect = [self trackRectForBounds:self.bounds];
-        self.value = self.value + self.scrubbingSpeed * (self.maximumValue - self.minimumValue) * (trackingOffset / trackRect.size.width);
+        float newValue = self.beganTrackingValue + self.scrubbingSpeed * (self.maximumValue - self.minimumValue) * (trackingOffset / trackRect.size.width);
+        [self setValue:newValue animated:animateSlider];
         
         if (self.continuous) {
             [self sendActionsForControlEvents:UIControlEventValueChanged];
@@ -144,6 +156,8 @@
 #pragma mark -
 #pragma mark Helper methods
 
+// Return the lowest index in the array of numbers passed in scrubbingSpeedPositions 
+// whose value is smaller than verticalOffset.
 - (NSUInteger) indexOfLowerScrubbingSpeed:(NSArray*)scrubbingSpeedPositions forOffset:(CGFloat)verticalOffset 
 {
     for (int i = 0; i < [scrubbingSpeedPositions count]; i++) {

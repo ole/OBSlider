@@ -15,6 +15,7 @@
     NSArray *scrubbingSpeedChangePositions;
     
     CGPoint beganTrackingLocation;
+    float beganTrackingValue;
 }
 
 @property (assign, readonly) float scrubbingSpeed;
