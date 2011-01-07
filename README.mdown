@@ -31,7 +31,7 @@ The default values for the two arrays are:
 
 (That is, scrubbing speed changes from 100% to 50% to 25% to 10% when the user moves the finger upward/downward by 50.0/100.0/150.0 points, respectively.)
 
-`OBSlider` works in iOS 3.0+ (iOS 3.x compatibility by [David Linsin](https://github.com/dlinsin). Thanks David!)
+`OBSlider` works in iOS 3.0+.
 
 
 ## Demo
@@ -47,3 +47,11 @@ The class is basically untested. Please report bugs via the issue tracker on Git
 ## License
 
 Licensed under the MIT license. You can use the code in your commercial and non-commercial projects.
+
+## Contributors
+
+* [Ole Begemann](https://github.com/ole)
+* [David Linsin](https://github.com/dlinsin): iOS 3.x compatibility
+* [Sylver Bruneau](https://github.com/sylverb): iPod.app-like slider behavior (as you drag towards the slider, the thumb meets your finger at the slider)
+
+Thanks!
