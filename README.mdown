@@ -1,6 +1,6 @@
 # OBSlider
 
-A `UISlider` subclass that adds variable scrubbing speeds (as seen in the iPad app on iOS) to `UISlider`.
+A `UISlider` subclass that adds variable scrubbing speeds (as seen in the iPod app on iOS) to `UISlider`.
 
 Written by [Ole Begemann](http://oleb.net), January 2011.
 
