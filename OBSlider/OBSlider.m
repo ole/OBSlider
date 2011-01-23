@@ -97,7 +97,15 @@
     BOOL beginTracking = [super beginTrackingWithTouch:touch withEvent:event];
     if (beginTracking)
     {
-        self.beganTrackingLocation = [touch locationInView:self];
+		// Set the beginning tracking location to the centre of the current
+		// position of the thumb. This ensures that the thumb is correctly re-positioned
+		// when the touch position moves back to the track after tracking in one
+		// of the slower tracking zones.
+		CGRect thumbRect = [self thumbRectForBounds:self.bounds 
+										  trackRect:[self trackRectForBounds:self.bounds]
+											  value:self.value];
+        self.beganTrackingLocation = CGPointMake(thumbRect.origin.x + thumbRect.size.width / 2.0f, 
+												 thumbRect.origin.y + thumbRect.size.height / 2.0f); 
         realPositionValue = self.value;
     }
     return beginTracking;
@@ -122,14 +130,16 @@
          
         CGRect trackRect = [self trackRectForBounds:self.bounds];
         realPositionValue = realPositionValue + (self.maximumValue - self.minimumValue) * (trackingOffset / trackRect.size.width);
+		
+		CGFloat valueAdjustment = self.scrubbingSpeed * (self.maximumValue - self.minimumValue) * (trackingOffset / trackRect.size.width);
+		CGFloat thumbAdjustment = 0.0f;
         if ( (self.beganTrackingLocation.y < currentLocation.y) && (currentLocation.y < previousLocation.y) ||
              (self.beganTrackingLocation.y > currentLocation.y) && (currentLocation.y > previousLocation.y) )
             {
             // We are getting closer to the slider, go closer to the real location
-            self.value = self.value + self.scrubbingSpeed * (self.maximumValue - self.minimumValue) * (trackingOffset / trackRect.size.width) + (realPositionValue - self.value) / ( 1 + fabsf(currentLocation.y - self.beganTrackingLocation.y));
-        } else {
-            self.value = self.value + self.scrubbingSpeed * (self.maximumValue - self.minimumValue) * (trackingOffset / trackRect.size.width);
+			thumbAdjustment = (realPositionValue - self.value) / ( 1 + fabsf(currentLocation.y - self.beganTrackingLocation.y));
         }
+		self.value += valueAdjustment + thumbAdjustment;
 
         if (self.continuous) {
             [self sendActionsForControlEvents:UIControlEventValueChanged];
