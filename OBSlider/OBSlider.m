@@ -17,6 +17,9 @@
 - (NSArray *) defaultScrubbingSpeeds;
 - (NSArray *) defaultScrubbingSpeedChangePositions;
 
+- (void) loadImages;
+
+
 @end
 
 
@@ -33,6 +36,9 @@
 {
     self.scrubbingSpeeds = nil;
     self.scrubbingSpeedChangePositions = nil;
+    [normalThumb release];
+    [highlightedThumb release];
+    
     [super dealloc];
 }
 
@@ -45,6 +51,8 @@
         self.scrubbingSpeeds = [self defaultScrubbingSpeeds];
         self.scrubbingSpeedChangePositions = [self defaultScrubbingSpeedChangePositions];
         self.scrubbingSpeed = [[self.scrubbingSpeeds objectAtIndex:0] floatValue];
+
+        [self loadImages];
     }
     return self;
 }
@@ -72,6 +80,8 @@
         }
         
         self.scrubbingSpeed = [[self.scrubbingSpeeds objectAtIndex:0] floatValue];
+        
+        [self loadImages];
     }
     return self;
 }
@@ -107,6 +117,9 @@
         self.beganTrackingLocation = CGPointMake(thumbRect.origin.x + thumbRect.size.width / 2.0f, 
 												 thumbRect.origin.y + thumbRect.size.height / 2.0f); 
         realPositionValue = self.value;
+        
+        [self setThumbImage:highlightedThumb
+                   forState:UIControlStateNormal];
     }
     return beginTracking;
 }
@@ -133,11 +146,21 @@
 		
 		CGFloat valueAdjustment = self.scrubbingSpeed * (self.maximumValue - self.minimumValue) * (trackingOffset / trackRect.size.width);
 		CGFloat thumbAdjustment = 0.0f;
-        if ( (self.beganTrackingLocation.y < currentLocation.y) && (currentLocation.y < previousLocation.y) ||
+		if ( (self.beganTrackingLocation.y < currentLocation.y) && (currentLocation.y < previousLocation.y) ||
              (self.beganTrackingLocation.y > currentLocation.y) && (currentLocation.y > previousLocation.y) )
             {
             // We are getting closer to the slider, go closer to the real location
-			thumbAdjustment = (realPositionValue - self.value) / ( 1 + fabsf(currentLocation.y - self.beganTrackingLocation.y));
+				
+			if (CGRectContainsPoint([self bounds], currentLocation)) {
+				// If within the bounds of the slider, then adjust thumb x-position to match touch
+				thumbAdjustment = realPositionValue - self.value;
+			}
+			else {
+				// Progressively move thumb closer to the x-position of the touch
+                CGFloat yDeltaAsPercentage = fabsf(currentLocation.y - previousLocation.y) / verticalOffset;
+                CGFloat xDiff = realPositionValue - self.value;
+                thumbAdjustment = yDeltaAsPercentage * xDiff;
+			}
         }
 		self.value += valueAdjustment + thumbAdjustment;
 
@@ -155,6 +178,9 @@
     {
         self.scrubbingSpeed = [[self.scrubbingSpeeds objectAtIndex:0] floatValue];
         [self sendActionsForControlEvents:UIControlEventValueChanged];
+        
+        [self setThumbImage:normalThumb
+                   forState:UIControlStateNormal];
     }
 }
 
@@ -176,6 +202,12 @@
     return NSNotFound; 
 }
 
+
+- (void) loadImages
+{
+    normalThumb = [UIImage imageNamed:@"sliderThumbNormal.png"];
+    highlightedThumb = [UIImage imageNamed:@"sliderThumbHighlighted.png"];
+}
 
 
 #pragma mark -

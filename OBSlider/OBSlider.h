@@ -17,6 +17,10 @@
     CGPoint beganTrackingLocation;
 	
     float realPositionValue;
+    
+    UIImage* normalThumb;
+    UIImage* highlightedThumb;
+
 }
 
 @property (assign, readonly) float scrubbingSpeed;
