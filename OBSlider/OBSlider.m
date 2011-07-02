@@ -17,6 +17,9 @@
 - (NSArray *) defaultScrubbingSpeeds;
 - (NSArray *) defaultScrubbingSpeedChangePositions;
 
+- (void) loadImages;
+
+
 @end
 
 
@@ -33,6 +36,9 @@
 {
     self.scrubbingSpeeds = nil;
     self.scrubbingSpeedChangePositions = nil;
+    [normalThumb release];
+    [highlightedThumb release];
+    
     [super dealloc];
 }
 
@@ -45,6 +51,8 @@
         self.scrubbingSpeeds = [self defaultScrubbingSpeeds];
         self.scrubbingSpeedChangePositions = [self defaultScrubbingSpeedChangePositions];
         self.scrubbingSpeed = [[self.scrubbingSpeeds objectAtIndex:0] floatValue];
+
+        [self loadImages];
     }
     return self;
 }
@@ -72,6 +80,8 @@
         }
         
         self.scrubbingSpeed = [[self.scrubbingSpeeds objectAtIndex:0] floatValue];
+        
+        [self loadImages];
     }
     return self;
 }
@@ -97,8 +107,19 @@
     BOOL beginTracking = [super beginTrackingWithTouch:touch withEvent:event];
     if (beginTracking)
     {
-        self.beganTrackingLocation = [touch locationInView:self];
+		// Set the beginning tracking location to the centre of the current
+		// position of the thumb. This ensures that the thumb is correctly re-positioned
+		// when the touch position moves back to the track after tracking in one
+		// of the slower tracking zones.
+		CGRect thumbRect = [self thumbRectForBounds:self.bounds 
+										  trackRect:[self trackRectForBounds:self.bounds]
+											  value:self.value];
+        self.beganTrackingLocation = CGPointMake(thumbRect.origin.x + thumbRect.size.width / 2.0f, 
+												 thumbRect.origin.y + thumbRect.size.height / 2.0f); 
         realPositionValue = self.value;
+        
+        [self setThumbImage:highlightedThumb
+                   forState:UIControlStateNormal];
     }
     return beginTracking;
 }
@@ -122,14 +143,26 @@
          
         CGRect trackRect = [self trackRectForBounds:self.bounds];
         realPositionValue = realPositionValue + (self.maximumValue - self.minimumValue) * (trackingOffset / trackRect.size.width);
-        if ( (self.beganTrackingLocation.y < currentLocation.y) && (currentLocation.y < previousLocation.y) ||
+		
+		CGFloat valueAdjustment = self.scrubbingSpeed * (self.maximumValue - self.minimumValue) * (trackingOffset / trackRect.size.width);
+		CGFloat thumbAdjustment = 0.0f;
+		if ( (self.beganTrackingLocation.y < currentLocation.y) && (currentLocation.y < previousLocation.y) ||
              (self.beganTrackingLocation.y > currentLocation.y) && (currentLocation.y > previousLocation.y) )
             {
             // We are getting closer to the slider, go closer to the real location
-            self.value = self.value + self.scrubbingSpeed * (self.maximumValue - self.minimumValue) * (trackingOffset / trackRect.size.width) + (realPositionValue - self.value) / ( 1 + fabsf(currentLocation.y - self.beganTrackingLocation.y));
-        } else {
-            self.value = self.value + self.scrubbingSpeed * (self.maximumValue - self.minimumValue) * (trackingOffset / trackRect.size.width);
+				
+			if (CGRectContainsPoint([self bounds], currentLocation)) {
+				// If within the bounds of the slider, then adjust thumb x-position to match touch
+				thumbAdjustment = realPositionValue - self.value;
+			}
+			else {
+				// Progressively move thumb closer to the x-position of the touch
+                CGFloat yDeltaAsPercentage = fabsf(currentLocation.y - previousLocation.y) / verticalOffset;
+                CGFloat xDiff = realPositionValue - self.value;
+                thumbAdjustment = yDeltaAsPercentage * xDiff;
+			}
         }
+		self.value += valueAdjustment + thumbAdjustment;
 
         if (self.continuous) {
             [self sendActionsForControlEvents:UIControlEventValueChanged];
@@ -145,6 +178,9 @@
     {
         self.scrubbingSpeed = [[self.scrubbingSpeeds objectAtIndex:0] floatValue];
         [self sendActionsForControlEvents:UIControlEventValueChanged];
+        
+        [self setThumbImage:normalThumb
+                   forState:UIControlStateNormal];
     }
 }
 
@@ -166,6 +202,12 @@
     return NSNotFound; 
 }
 
+
+- (void) loadImages
+{
+    normalThumb = [UIImage imageNamed:@"sliderThumbNormal.png"];
+    highlightedThumb = [UIImage imageNamed:@"sliderThumbHighlighted.png"];
+}
 
 
 #pragma mark -
