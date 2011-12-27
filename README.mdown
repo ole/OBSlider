@@ -53,5 +53,6 @@ Licensed under the MIT license. You can use the code in your commercial and non-
 * [Ole Begemann](https://github.com/ole)
 * [David Linsin](https://github.com/dlinsin): iOS 3.x compatibility
 * [Sylver Bruneau](https://github.com/sylverb): iPod.app-like slider behavior (as you drag towards the slider, the thumb meets your finger at the slider)
+* [Brad Sokol](https://github.com/bradsokol): Position the thumb more precisely when the user drags their finger back towards the slider
 
 Thanks!
