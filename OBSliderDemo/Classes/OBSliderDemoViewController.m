@@ -16,7 +16,7 @@
 - (void) releaseOutlets;
 - (void) updateUI;
 
-@end;
+@end
 
 
 

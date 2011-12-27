@@ -19,8 +19,8 @@
     float realPositionValue;
 }
 
-@property (assign, readonly) float scrubbingSpeed;
-@property (retain) NSArray *scrubbingSpeeds;
-@property (retain) NSArray *scrubbingSpeedChangePositions;
+@property (atomic, assign, readonly) float scrubbingSpeed;
+@property (atomic, retain) NSArray *scrubbingSpeeds;
+@property (atomic, retain) NSArray *scrubbingSpeedChangePositions;
 
 @end

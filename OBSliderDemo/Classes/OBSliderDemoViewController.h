@@ -18,9 +18,9 @@
     UILabel *scrubbingSpeedLabel;
 }
 
-@property (retain) IBOutlet OBSlider *slider;
-@property (retain) IBOutlet UILabel *sliderValueLabel;
-@property (retain) IBOutlet UILabel *scrubbingSpeedLabel;
+@property (atomic, retain) IBOutlet OBSlider *slider;
+@property (atomic, retain) IBOutlet UILabel *sliderValueLabel;
+@property (atomic, retain) IBOutlet UILabel *scrubbingSpeedLabel;
 
 - (IBAction) sliderValueDidChange:(id)sender;
 

@@ -10,8 +10,8 @@
 
 @interface OBSlider ()
 
-@property (assign, readwrite) float scrubbingSpeed;
-@property (assign) CGPoint beganTrackingLocation;
+@property (atomic, assign, readwrite) float scrubbingSpeed;
+@property (atomic, assign) CGPoint beganTrackingLocation;
 
 - (NSUInteger) indexOfLowerScrubbingSpeed:(NSArray*)scrubbingSpeedPositions forOffset:(CGFloat)verticalOffset;
 - (NSArray *) defaultScrubbingSpeeds;
@@ -167,7 +167,7 @@
 // whose value is smaller than verticalOffset.
 - (NSUInteger) indexOfLowerScrubbingSpeed:(NSArray*)scrubbingSpeedPositions forOffset:(CGFloat)verticalOffset 
 {
-    for (int i = 0; i < [scrubbingSpeedPositions count]; i++) {
+    for (NSUInteger i = 0; i < [scrubbingSpeedPositions count]; i++) {
         NSNumber *scrubbingSpeedOffset = [scrubbingSpeedPositions objectAtIndex:i];
         if (verticalOffset < [scrubbingSpeedOffset floatValue]) {
             return i;
