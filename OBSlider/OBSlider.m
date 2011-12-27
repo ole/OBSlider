@@ -133,8 +133,8 @@
 		
 		CGFloat valueAdjustment = self.scrubbingSpeed * (self.maximumValue - self.minimumValue) * (trackingOffset / trackRect.size.width);
 		CGFloat thumbAdjustment = 0.0f;
-        if ( (self.beganTrackingLocation.y < currentLocation.y) && (currentLocation.y < previousLocation.y) ||
-             (self.beganTrackingLocation.y > currentLocation.y) && (currentLocation.y > previousLocation.y) )
+        if ( ((self.beganTrackingLocation.y < currentLocation.y) && (currentLocation.y < previousLocation.y)) ||
+             ((self.beganTrackingLocation.y > currentLocation.y) && (currentLocation.y > previousLocation.y)) )
             {
             // We are getting closer to the slider, go closer to the real location
 			thumbAdjustment = (realPositionValue - self.value) / ( 1 + fabsf(currentLocation.y - self.beganTrackingLocation.y));
