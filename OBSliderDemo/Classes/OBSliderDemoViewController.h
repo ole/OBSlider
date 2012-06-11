@@ -12,9 +12,9 @@
 
 @interface OBSliderDemoViewController : UIViewController 
 
-@property (atomic, retain) IBOutlet OBSlider *slider;
-@property (atomic, retain) IBOutlet UILabel *sliderValueLabel;
-@property (atomic, retain) IBOutlet UILabel *scrubbingSpeedLabel;
+@property (weak, nonatomic) IBOutlet OBSlider *slider;
+@property (weak, nonatomic) IBOutlet UILabel *sliderValueLabel;
+@property (weak, nonatomic) IBOutlet UILabel *scrubbingSpeedLabel;
 
 - (IBAction)sliderValueDidChange:(id)sender;
 

@@ -10,8 +10,8 @@
 
 @interface OBSlider : UISlider
 
-@property (atomic, assign, readonly) float scrubbingSpeed;
-@property (atomic, retain) NSArray *scrubbingSpeeds;
-@property (atomic, retain) NSArray *scrubbingSpeedChangePositions;
+@property (assign, nonatomic, readonly) float scrubbingSpeed;
+@property (strong, nonatomic) NSArray *scrubbingSpeeds;
+@property (strong, nonatomic) NSArray *scrubbingSpeedChangePositions;
 
 @end

@@ -10,9 +10,9 @@
 
 @interface OBSlider ()
 
-@property (atomic, assign, readwrite) float scrubbingSpeed;
-@property (atomic, assign, readwrite) float realPositionValue;
-@property (atomic, assign) CGPoint beganTrackingLocation;
+@property (assign, nonatomic, readwrite) float scrubbingSpeed;
+@property (assign, nonatomic, readwrite) float realPositionValue;
+@property (assign, nonatomic) CGPoint beganTrackingLocation;
 
 - (NSUInteger)indexOfLowerScrubbingSpeed:(NSArray*)scrubbingSpeedPositions forOffset:(CGFloat)verticalOffset;
 - (NSArray *)defaultScrubbingSpeeds;
@@ -29,13 +29,6 @@
 @synthesize scrubbingSpeedChangePositions = _scrubbingSpeedChangePositions;
 @synthesize beganTrackingLocation = _beganTrackkingLocation;
 @synthesize realPositionValue = _realPositionValue;
-
-- (void)dealloc
-{
-    self.scrubbingSpeeds = nil;
-    self.scrubbingSpeedChangePositions = nil;
-    [super dealloc];
-}
 
 - (id)initWithFrame:(CGRect)frame
 {

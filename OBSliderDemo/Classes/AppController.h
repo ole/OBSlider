@@ -12,8 +12,7 @@
 
 @interface AppController : UIResponder <UIApplicationDelegate> 
 
-@property (nonatomic, retain) IBOutlet UIWindow *window;
-@property (nonatomic, retain) IBOutlet OBSliderDemoViewController *viewController;
+@property (strong, nonatomic) IBOutlet UIWindow *window;
+@property (strong, nonatomic) IBOutlet OBSliderDemoViewController *viewController;
 
 @end
-
