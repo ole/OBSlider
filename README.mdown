@@ -31,7 +31,12 @@ The default values for the two arrays are:
 
 (That is, scrubbing speed changes from 100% to 50% to 25% to 10% when the user moves the finger upward/downward by 50.0/100.0/150.0 points, respectively.)
 
-`OBSlider` works in iOS 3.0+.
+
+## Requirements
+
+`OBSlider` 1.0.0 (tagged with 1.0.0) works in iOS 3.0+.
+
+With version 1.1.0 (tagged 1.1.0) I converted the source code to Automatic Reference Counting (ARC) and raised the deployment target of the demo app to iOS 5.0. If you want to support earlier iOS versions, please check out the 1.0.0 tag.
 
 
 ## Demo
