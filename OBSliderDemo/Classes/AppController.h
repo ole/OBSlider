@@ -10,11 +10,7 @@
 
 @class OBSliderDemoViewController;
 
-@interface AppController : NSObject <UIApplicationDelegate> 
-{
-    UIWindow *window;
-    OBSliderDemoViewController *viewController;
-}
+@interface AppController : UIResponder <UIApplicationDelegate> 
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
 @property (nonatomic, retain) IBOutlet OBSliderDemoViewController *viewController;

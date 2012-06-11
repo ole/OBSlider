@@ -11,11 +11,12 @@
 @interface OBSlider ()
 
 @property (atomic, assign, readwrite) float scrubbingSpeed;
+@property (atomic, assign, readwrite) float realPositionValue;
 @property (atomic, assign) CGPoint beganTrackingLocation;
 
-- (NSUInteger) indexOfLowerScrubbingSpeed:(NSArray*)scrubbingSpeedPositions forOffset:(CGFloat)verticalOffset;
-- (NSArray *) defaultScrubbingSpeeds;
-- (NSArray *) defaultScrubbingSpeedChangePositions;
+- (NSUInteger)indexOfLowerScrubbingSpeed:(NSArray*)scrubbingSpeedPositions forOffset:(CGFloat)verticalOffset;
+- (NSArray *)defaultScrubbingSpeeds;
+- (NSArray *)defaultScrubbingSpeedChangePositions;
 
 @end
 
@@ -23,21 +24,20 @@
 
 @implementation OBSlider
 
-@synthesize scrubbingSpeed;
-@synthesize scrubbingSpeeds;
-@synthesize scrubbingSpeedChangePositions;
-@synthesize beganTrackingLocation;
+@synthesize scrubbingSpeed = _scrubbingSpeed;
+@synthesize scrubbingSpeeds = _scrubbingSpeeds;
+@synthesize scrubbingSpeedChangePositions = _scrubbingSpeedChangePositions;
+@synthesize beganTrackingLocation = _beganTrackkingLocation;
+@synthesize realPositionValue = _realPositionValue;
 
-
-- (void) dealloc
+- (void)dealloc
 {
     self.scrubbingSpeeds = nil;
     self.scrubbingSpeedChangePositions = nil;
     [super dealloc];
 }
 
-
-- (id) initWithFrame:(CGRect)frame
+- (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self != nil)
@@ -50,11 +50,9 @@
 }
 
 
+#pragma mark - NSCoding
 
-#pragma mark -
-#pragma mark NSCoding
-
-- (id) initWithCoder:(NSCoder *)decoder
+- (id)initWithCoder:(NSCoder *)decoder
 {
     self = [super initWithCoder:decoder];
     if (self != nil) 
@@ -76,8 +74,7 @@
     return self;
 }
 
-
-- (void) encodeWithCoder:(NSCoder *)coder
+- (void)encodeWithCoder:(NSCoder *)coder
 {
     [super encodeWithCoder:coder];
 
@@ -88,11 +85,10 @@
 }
 
 
-
 #pragma mark -
 #pragma mark Touch tracking
 
-- (BOOL) beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
+- (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
     BOOL beginTracking = [super beginTrackingWithTouch:touch withEvent:event];
     if (beginTracking)
@@ -106,13 +102,12 @@
 											  value:self.value];
         self.beganTrackingLocation = CGPointMake(thumbRect.origin.x + thumbRect.size.width / 2.0f, 
 												 thumbRect.origin.y + thumbRect.size.height / 2.0f); 
-        realPositionValue = self.value;
+        self.realPositionValue = self.value;
     }
     return beginTracking;
 }
 
-
-- (BOOL) continueTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
+- (BOOL)continueTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
     if (self.tracking)
     {
@@ -129,7 +124,7 @@
         self.scrubbingSpeed = [[self.scrubbingSpeeds objectAtIndex:scrubbingSpeedChangePosIndex - 1] floatValue];
          
         CGRect trackRect = [self trackRectForBounds:self.bounds];
-        realPositionValue = realPositionValue + (self.maximumValue - self.minimumValue) * (trackingOffset / trackRect.size.width);
+        self.realPositionValue = self.realPositionValue + (self.maximumValue - self.minimumValue) * (trackingOffset / trackRect.size.width);
 		
 		CGFloat valueAdjustment = self.scrubbingSpeed * (self.maximumValue - self.minimumValue) * (trackingOffset / trackRect.size.width);
 		CGFloat thumbAdjustment = 0.0f;
@@ -137,7 +132,7 @@
              ((self.beganTrackingLocation.y > currentLocation.y) && (currentLocation.y > previousLocation.y)) )
             {
             // We are getting closer to the slider, go closer to the real location
-			thumbAdjustment = (realPositionValue - self.value) / ( 1 + fabsf(currentLocation.y - self.beganTrackingLocation.y));
+			thumbAdjustment = (self.realPositionValue - self.value) / (1 + fabsf(currentLocation.y - self.beganTrackingLocation.y));
         }
 		self.value += valueAdjustment + thumbAdjustment;
 
@@ -148,8 +143,7 @@
     return self.tracking;
 }
 
-
-- (void) endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
+- (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
     if (self.tracking) 
     {
@@ -159,9 +153,7 @@
 }
 
 
-
-#pragma mark -
-#pragma mark Helper methods
+#pragma mark - Helper methods
 
 // Return the lowest index in the array of numbers passed in scrubbingSpeedPositions 
 // whose value is smaller than verticalOffset.
@@ -177,9 +169,7 @@
 }
 
 
-
-#pragma mark -
-#pragma mark Default values
+#pragma mark - Default values
 
 // Used in -initWithFrame: and -initWithCoder:
 - (NSArray *) defaultScrubbingSpeeds
@@ -191,7 +181,6 @@
             [NSNumber numberWithFloat:0.1f],
             nil];
 }
-
 
 - (NSArray *) defaultScrubbingSpeedChangePositions
 {

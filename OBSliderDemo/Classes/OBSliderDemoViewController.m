@@ -9,60 +9,51 @@
 #import "OBSliderDemoViewController.h"
 #import "OBSlider.h"
 
-
-
 @interface OBSliderDemoViewController ()
 
-- (void) releaseOutlets;
-- (void) updateUI;
+- (void)releaseOutlets;
+- (void)updateUI;
 
 @end
 
 
-
 @implementation OBSliderDemoViewController
 
-@synthesize slider;
-@synthesize sliderValueLabel;
-@synthesize scrubbingSpeedLabel;
+@synthesize slider = _slider;
+@synthesize sliderValueLabel = _sliderValueLabel;
+@synthesize scrubbingSpeedLabel = _scrubbingSpeedLabel;
 
-
-- (void) dealloc 
+- (void)dealloc 
 {
     [self releaseOutlets];
     [super dealloc];
 }
 
-
-- (void) viewDidLoad 
+- (void)viewDidLoad 
 {
     [super viewDidLoad];
 }
 
-
-- (void) viewDidUnload 
+- (void)viewDidUnload 
 {
 	// Release any retained subviews of the main view.
 	// e.g. self.myOutlet = nil;
     [self releaseOutlets];
 }
 
-
-- (void) releaseOutlets
+- (void)releaseOutlets
 {
     self.slider = nil;
     self.sliderValueLabel = nil;
     self.scrubbingSpeedLabel = nil;
 }
 
-
-- (void) viewWillAppear:(BOOL)animated
+- (void)viewWillAppear:(BOOL)animated
 {
     [self updateUI];
 }
 
-
-- (void) updateUI
+- (void)updateUI
 {
     NSNumberFormatter *percentFormatter = [[[NSNumberFormatter alloc] init] autorelease];
     [percentFormatter setNumberStyle:NSNumberFormatterPercentStyle];
@@ -72,8 +63,7 @@
                                      [percentFormatter stringFromNumber:[NSNumber numberWithFloat:self.slider.scrubbingSpeed]]];
 }
 
-
-- (IBAction) sliderValueDidChange:(id)sender
+- (IBAction)sliderValueDidChange:(id)sender
 {
     [self updateUI];
 }
