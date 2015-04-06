@@ -1,3 +1,11 @@
+##### This fork fixes some issues:
+
+- property shouldNotCallSuperOnBeginTracking was added, because on iOS 7+ call to UISlider beginTrackingWithTouch:touch withEvent:event causes glitch (its default value is NOT for compatibility)
+- original slider value on begin tracking is remembered and on endTrackingWithTouch:touch withEvent: is compared with current value, only if different sendActionsForControlEvents:UIControlEventValueChanged is sent
+- on endTrackingWithTouch:withEvent:  property 'tracking' of UISlider is set (using KVC), originally it's responsibility of [UISlider  endTrackingWithTouch:withEvent:]
+
+##### Original description
+
 # OBSlider
 
 A `UISlider` subclass that adds variable scrubbing speeds (as seen in the iPod app on iOS) to `UISlider`.
