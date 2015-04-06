@@ -25,6 +25,10 @@
 - (void)viewDidLoad 
 {
     [super viewDidLoad];
+	
+	// fix glitch on iOS 7+
+	self.slider.shouldNotCallSuperOnBeginTracking = [[UIDevice currentDevice].systemVersion compare:@"7.0" options:NSNumericSearch] != NSOrderedAscending;
+
 }
 
 - (void)viewDidUnload 

@@ -13,6 +13,7 @@
 @property (assign, nonatomic, readwrite) float scrubbingSpeed;
 @property (assign, nonatomic, readwrite) float realPositionValue;
 @property (assign, nonatomic) CGPoint beganTrackingLocation;
+@property (assign, nonatomic) float beganTrackingValue;
 
 - (NSUInteger)indexOfLowerScrubbingSpeed:(NSArray*)scrubbingSpeedPositions forOffset:(CGFloat)verticalOffset;
 - (NSArray *)defaultScrubbingSpeeds;
@@ -29,6 +30,7 @@
 @synthesize scrubbingSpeedChangePositions = _scrubbingSpeedChangePositions;
 @synthesize beganTrackingLocation = _beganTrackkingLocation;
 @synthesize realPositionValue = _realPositionValue;
+@synthesize beganTrackingValue = _beganTrackingValue;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -83,8 +85,9 @@
 
 - (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
-    BOOL beginTracking = [super beginTrackingWithTouch:touch withEvent:event];
-    if (beginTracking)
+	BOOL beginTracking = self.shouldNotCallSuperOnBeginTracking ? YES :	[super beginTrackingWithTouch:touch withEvent:event];
+	
+	if (beginTracking)
     {
 		// Set the beginning tracking location to the centre of the current
 		// position of the thumb. This ensures that the thumb is correctly re-positioned
@@ -93,16 +96,21 @@
 		CGRect thumbRect = [self thumbRectForBounds:self.bounds 
 										  trackRect:[self trackRectForBounds:self.bounds]
 											  value:self.value];
-        self.beganTrackingLocation = CGPointMake(thumbRect.origin.x + thumbRect.size.width / 2.0f, 
-												 thumbRect.origin.y + thumbRect.size.height / 2.0f); 
+		
+		self.beganTrackingLocation = CGPointMake(CGRectGetMidX(thumbRect), CGRectGetMidY(thumbRect));
+		
         self.realPositionValue = self.value;
+		
+		// remeber original value
+		self.beganTrackingValue = self.value;
     }
+	
     return beginTracking;
 }
 
 - (BOOL)continueTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
-    if (self.tracking)
+	if (self.tracking)
     {
         CGPoint previousLocation = [touch previousLocationInView:self];
         CGPoint currentLocation  = [touch locationInView:self];
@@ -127,21 +135,31 @@
             // We are getting closer to the slider, go closer to the real location
 			thumbAdjustment = (self.realPositionValue - self.value) / (1 + fabsf(currentLocation.y - self.beganTrackingLocation.y));
         }
-		self.value += valueAdjustment + thumbAdjustment;
-
+		
+		[self setValue:self.value+valueAdjustment+thumbAdjustment];
+		
         if (self.continuous) {
             [self sendActionsForControlEvents:UIControlEventValueChanged];
         }
     }
-    return self.tracking;
+	
+	return self.tracking;
 }
 
 - (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
-    if (self.tracking) 
+	if (self.tracking)
     {
-        self.scrubbingSpeed = [[self.scrubbingSpeeds objectAtIndex:0] floatValue];
-        [self sendActionsForControlEvents:UIControlEventValueChanged];
+		// because [UISlider endTrackingWithTouch:withEvent:] interfere with our code
+		// we can't call super, but we should at least set the 'tracking' property to NO
+		[self setValue:@(NO) forKey:@"tracking"];
+		
+		self.scrubbingSpeed = [[self.scrubbingSpeeds objectAtIndex:0] floatValue];
+		
+		// check if the value was changed
+		if( self.value != self.beganTrackingValue ) {
+			[self sendActionsForControlEvents:UIControlEventValueChanged];
+		}
     }
 }
 
