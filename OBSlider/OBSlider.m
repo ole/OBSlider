@@ -28,7 +28,7 @@
 @synthesize scrubbingSpeed = _scrubbingSpeed;
 @synthesize scrubbingSpeeds = _scrubbingSpeeds;
 @synthesize scrubbingSpeedChangePositions = _scrubbingSpeedChangePositions;
-@synthesize beganTrackingLocation = _beganTrackkingLocation;
+@synthesize beganTrackingLocation = _beganTrackingLocation;
 @synthesize realPositionValue = _realPositionValue;
 @synthesize beganTrackingValue = _beganTrackingValue;
 
