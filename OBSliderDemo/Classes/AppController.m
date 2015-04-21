@@ -11,9 +11,6 @@
 
 @implementation AppController
 
-@synthesize window = _window;
-@synthesize viewController = _viewController;
-
 #pragma mark - Application lifecycle
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions 

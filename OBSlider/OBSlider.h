@@ -7,7 +7,6 @@
 
 #import <UIKit/UIKit.h>
 
-
 @interface OBSlider : UISlider
 
 @property (assign, nonatomic, readonly) float scrubbingSpeed;

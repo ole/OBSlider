@@ -9,31 +9,11 @@
 #import "OBSliderDemoViewController.h"
 #import "OBSlider.h"
 
-@interface OBSliderDemoViewController ()
-
-- (void)updateUI;
-
-@end
-
-
 @implementation OBSliderDemoViewController
-
-@synthesize slider = _slider;
-@synthesize sliderValueLabel = _sliderValueLabel;
-@synthesize scrubbingSpeedLabel = _scrubbingSpeedLabel;
 
 - (void)viewDidLoad 
 {
     [super viewDidLoad];
-}
-
-- (void)viewDidUnload 
-{
-	// Release any retained subviews of the main view.
-	// e.g. self.myOutlet = nil;
-    self.slider = nil;
-    self.sliderValueLabel = nil;
-    self.scrubbingSpeedLabel = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -48,7 +28,7 @@
     
     self.sliderValueLabel.text = [NSString stringWithFormat:@"Value: %.0f", self.slider.value];
     self.scrubbingSpeedLabel.text = [NSString stringWithFormat:@"Scrubbing speed: %@",
-                                     [percentFormatter stringFromNumber:[NSNumber numberWithFloat:self.slider.scrubbingSpeed]]];
+                                     [percentFormatter stringFromNumber:@(self.slider.scrubbingSpeed)]];
 }
 
 - (IBAction)sliderValueDidChange:(id)sender
