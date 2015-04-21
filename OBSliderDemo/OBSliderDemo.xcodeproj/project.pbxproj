@@ -15,6 +15,7 @@
 		2899E5220DE3E06400AC0155 /* OBSliderDemoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2899E5210DE3E06400AC0155 /* OBSliderDemoViewController.xib */; };
 		28D7ACF80DDB3853001CB0EB /* OBSliderDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* OBSliderDemoViewController.m */; };
 		5DC4B21B12D207DC00BA19A1 /* OBSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC4B21A12D207DC00BA19A1 /* OBSlider.m */; };
+		5DDD614E1AE6A498008139BF /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5DDD614D1AE6A498008139BF /* Launch Screen.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +32,7 @@
 		32CA4F630368D1EE00C91783 /* OBSliderDemo_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBSliderDemo_Prefix.pch; sourceTree = "<group>"; };
 		5DC4B21912D207DC00BA19A1 /* OBSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBSlider.h; sourceTree = "<group>"; };
 		5DC4B21A12D207DC00BA19A1 /* OBSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OBSlider.m; sourceTree = "<group>"; };
+		5DDD614D1AE6A498008139BF /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* OBSliderDemo-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "OBSliderDemo-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -93,6 +95,7 @@
 			isa = PBXGroup;
 			children = (
 				2899E5210DE3E06400AC0155 /* OBSliderDemoViewController.xib */,
+				5DDD614D1AE6A498008139BF /* Launch Screen.xib */,
 				8D1107310486CEB800E47090 /* OBSliderDemo-Info.plist */,
 			);
 			name = Resources;
@@ -171,6 +174,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2899E5220DE3E06400AC0155 /* OBSliderDemoViewController.xib in Resources */,
+				5DDD614E1AE6A498008139BF /* Launch Screen.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -202,6 +206,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = OBSliderDemo_Prefix.pch;
 				INFOPLIST_FILE = "OBSliderDemo-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_NAME = OBSliderDemo;
 			};
 			name = Debug;
@@ -215,6 +220,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = OBSliderDemo_Prefix.pch;
 				INFOPLIST_FILE = "OBSliderDemo-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_NAME = OBSliderDemo;
 				VALIDATE_PRODUCT = YES;
 			};
