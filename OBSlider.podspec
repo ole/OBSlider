@@ -7,7 +7,10 @@ Pod::Spec.new do |s|
   s.author   = { 'Ole Begemann' => 'ole@oleb.net' }
   s.source   = { :git => 'https://github.com/ole/OBSlider.git', :tag => '1.1.1' }
   s.description = 'OBSlider is a UISlider subclass that adds variable scrubbing speeds as seen in the Music app on iOS. While scrubbing the slider, the user can slow down the scrubbing speed by moving the finger up or down (away from the slider). The distance thresholds and slowdown factors can be freely configured by the developer.'
-  s.platform = :ios
+
+  s.ios.deployment_target = '5.0'
+  s.visionos.deployment_target = '1.0'
+
   s.source_files = 'OBSlider/**/*.{h,m}'
 
   s.requires_arc = true
