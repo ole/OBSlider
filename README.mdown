@@ -1,3 +1,6 @@
+> [!WARNING]
+> This repository is no longer being maintained. I won't release new versions of the library.
+
 # OBSlider
 
 A `UISlider` subclass that adds variable scrubbing speeds (as seen in the iPod app on iOS) to `UISlider`.
